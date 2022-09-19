@@ -1,0 +1,25 @@
+{
+    "towerligh": {
+        "url": "http://your-towerlight-addr:port/set-route"
+    },
+    "whatsapp":{
+
+    },
+    "email":{
+        "servers":[
+            {
+                "user": "you-email@mail.com",
+                "password": "your-password",
+                "host": "your-imap-host.imap.com",
+                "port": 993,
+                "tls": true,
+                "tlsOptions":{
+                    "servername": "same as your host"
+                }
+            }
+        ]
+    },
+    "mail":{
+
+    }
+}

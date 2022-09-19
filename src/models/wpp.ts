@@ -1,8 +1,9 @@
-import { create, Whatsapp } from '@wppconnect-team/wppconnect';
+import { create, Whatsapp, Message, SocketState, Ack } from '@wppconnect-team/wppconnect';
+import { status } from './status';
 
 // init wpp-connect
-export function wppInit(){
-    create( 
+export async function wpp_exec(){
+    await create( 
         {
             session: "node",
             catchQR: (qrCode: string, asciiQR: string, attempt: number, urlCode?: string) => {
@@ -14,11 +15,15 @@ export function wppInit(){
                 console.log("Session name: ", session);
             },
             headless: true,
+            // folderNameToken: "./tokens",
+            // puppeteerOptions: {
+            //     userDataDir: './tokens/node'
+            // },
             devtools: false,
             useChrome: false,
             logQR: true,
-            disableWelcome: false,
-            folderNameToken: "./tokens"
+            disableWelcome: true,
+            autoClose: 0
         }
     ).then(
         (client: Whatsapp) => {
@@ -33,8 +38,14 @@ export function wppInit(){
 
 // start wpp-connect Whatsapp client
 async function start(client: Whatsapp){
-    client.onMessage((message) => {
-        // console.log("[%s]: %s", message.timestamp.toLocaleString(), message.body);
-        console.log(message);
+
+    client.onMessage(async (message: Message) => {
+        console.log("[wpp]: %s: %s", message.sender.shortName, message.body);
+        status.flagWhatsapp = true;
+    });
+    
+    client.onIncomingCall(async (call: any) => {
+        console.log("[wpp]: incoming call");
+        status.flagWhatsapp = true;
     });
 }
